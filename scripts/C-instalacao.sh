@@ -1,6 +1,6 @@
 #!/bin/bash
 pacotes=()
-source resources.sh
+source scripts/resources.sh
 
 echo "Beleza, mirrors atualizados. Bora continuar..."
 echo ""

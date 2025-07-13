@@ -1,6 +1,10 @@
 #!/bin/bash
-source resources.sh
+source scripts/resources.sh
 timedatectl
+loadkeys br-abnt2
+mkdir -p tmp/.ansible-${USER}/tmp
+
+
 sleep 1
 echo "Preparando particionamento..."
 sleep 1
@@ -39,7 +43,7 @@ while [[ -z "$disco" || ! -b "/dev/$disco" ]]; do
 done
 
 # Criar/respeitar respostas.env
-envfile="../respostas.env"
+envfile="respostas.env"
 touch "$envfile"
 
 set_env_var "DISCO" "$disco"
