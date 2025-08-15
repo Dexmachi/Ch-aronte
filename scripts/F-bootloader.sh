@@ -1,7 +1,7 @@
 #!/bin/bash
 sleep 1
 nome_pc="$(cat /mnt/etc/hostname)"
-if [ /sys/firmware/efi ]; then
+if [ -d /sys/firmware/efi ]; then
   firmware="UEFI"
 else
   firmware="BIOS"
