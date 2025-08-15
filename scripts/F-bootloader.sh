@@ -6,7 +6,7 @@ if [ -d /sys/firmware/efi ]; then
 else
   firmware="BIOS"
 fi
-echo $firmware
+echo "Firmware: $firmware"
 echo "belezinha belezinha, agora é a parte fudida, tá preparado?"
 echo "vamo configurar teu refind."
 arch-chroot /mnt refind-install
