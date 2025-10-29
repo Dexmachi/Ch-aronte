@@ -46,6 +46,13 @@
     - users_to_remove is defined
     - users_to_remove | length > 0
 
+- name: Validate secrets file configuration
+  ansible.builtin.assert:
+    that:
+      - "(lookup('file', secrets.sec_file) | from_yaml).sops is not defined"
+    fail_msg: "The file '{{ secrets.sec_file }}' seems to have been criptographed with sops, however, secrets.sec_mode is '{{ secrets.sec_mode }}', please verify your config"
+  when: secrets.sec_mode != 'sops'
+
 - name: Make sure users exist
   ansible.builtin.user:
     name: "{{ item.name }}"
@@ -60,7 +67,7 @@
                   else omit }}"
   loop: "{{ users }}"
   vars:
-    sops_config_path: "Ch-obolos/sops-config.yml"
+    sops_config_path: "{{ secrets.sec_sops }}"
     user_secrets_content: "{{ lookup('community.sops.sops',
                            file=secrets.sec_file,
                            config_file=secrets.sec_sops)
