@@ -67,7 +67,6 @@
                   else omit }}"
   loop: "{{ users }}"
   vars:
-    sops_config_path: "{{ secrets.sec_sops }}"
     user_secrets_content: "{{ lookup('community.sops.sops',
                            file=secrets.sec_file,
                            config_file=secrets.sec_sops)
