@@ -60,10 +60,15 @@
                   else omit }}"
   loop: "{{ users }}"
   vars:
-    user_secrets: "{{ ((lookup('file', secrets.sec_file)
-                        if secrets.sec_mode == 'charonte'
-                        else lookup('community.sops.sops', file=secrets.sec_file))
-                        | from_yaml).user_secrets }}"
+    sops_config_path: "Ch-obolos/sops-config.yml"
+    user_secrets_content: >-
+      {{ lookup('file',
+                secrets.sec_file)
+         if secrets.sec_mode == 'charonte'
+         else lookup('community.sops.sops',
+                      file=secrets.sec_file,
+                      config_file=secrets.sec_sops) }}
+    user_secrets: "{{ (user_secrets_content | from_yaml).user_secrets }}"
   when:
     - users is defined
     - secrets is defined

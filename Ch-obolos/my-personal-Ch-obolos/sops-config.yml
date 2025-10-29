@@ -1,0 +1,5 @@
+# This was created by the Ch-aronte project
+creation_rules:
+  - path_regex: (.*)?secrets_.*\.yml$
+    pgp: >-
+      5970BC1D58B0C954DD3797F3250F10F85A31ED05
