@@ -149,6 +149,11 @@ EOF
   echo "Você precisará digitar a senha da sua chave PGP agora." >&2
   sops --config "$SOPS_CONFIG_FILE" --encrypt --in-place "$SECRETS_FILE"
   echo "Arquivo '$SECRETS_FILE' criptografado com sucesso." >&2
+
+  echo "Copiando seu keyring para seu novo sistema" >&2
+  mkdir -p /mnt/root/.gnupg/
+  cp -a /root/.gnupg/* /mnt/root/.gnupg/
+  echo "Cópia concluida" >&2
 fi
 
 echo "$SECRETS_FILE" >>./.gitignore
@@ -167,5 +172,4 @@ if [[ $CHOICE = "usar" || $CHOICE = "use" ]]; then
   fi
 fi
 
-# --- Encadeia o próximo script ---
 echo "Configuração finalizada. Passando para a instalação do bootloader..."
