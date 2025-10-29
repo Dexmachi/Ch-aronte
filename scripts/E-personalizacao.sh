@@ -97,12 +97,12 @@ esac
 if [ "$USE_SOPS" = true ]; then
   echo "Configurando SOPS. Primeiro, vamos gerar uma chave PGP para você." >&2
 
-  read -p "Digite seu nome completo (para a chave PGP): " pgp_name
-  read -p "Digite seu email (para a chave PGP): " pgp_email
+  read -rp "Digite seu nome completo (para a chave PGP): " pgp_name
+  read -rp "Digite seu email (para a chave PGP): " pgp_email
   while [[ -z "$pgp_name" || -z "$pgp_email" ]]; do
     echo "Nome e email não podem ser vazios." >&2
-    read -p "Digite seu nome completo: " pgp_name
-    read -p "Digite seu email: " pgp_email
+    read -rp "Digite seu nome completo: " pgp_name
+    read -rp "Digite seu email: " pgp_email
   done
 
   echo "Gerando uma chave PGP de 4096 bits para '${pgp_name} <${pgp_email}>'..." >&2
