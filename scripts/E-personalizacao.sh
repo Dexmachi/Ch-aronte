@@ -55,8 +55,8 @@ plugin_set_value "secrets.sec_mode" "charonte"
 clear
 echo "Senha para o usuário: ${username}"
 echo "Como deseja configurar a senha?"
-echo "1" "Digitar agora e salvar como HASH (Recomendado, Nix-like)"
-echo "2" "Digitar agora e salvar em COFRE (SOPS com texto puro, automatizado)"
+echo "1" "Digitar agora e salvar em COFRE (SOPS com texto hasheado, nix like)"
+echo "2" "Digitar agora e salvar como HASH plain text"
 echo "3" "Digitar agora e não salvar em cofre (Plain Text, Extremamente inseguro, mas fácil de ler)"
 echo "4" "Não definir senha agora (configuração manual pós-reboot)"
 read -r choice
@@ -64,18 +64,19 @@ read -r choice
 plugin_set_value "secrets.sec_mode" "charonte"
 
 case $choice in
-"1")
+"2")
   read -srp "Digite a senha para '${username}': " user_pass
   echo ""
   user_hash=$(printf '%s' "$user_pass" | openssl passwd -6 -stdin)
   yq -iy ".user_secrets.${username}.password = \"$user_hash\"" "$SECRETS_FILE"
   yq -iy ".user_secrets.root.password = \"$user_hash\"" "$SECRETS_FILE"
   ;;
-"2")
+"1")
   read -srp "Digite a senha para '${username}': " user_pass
   echo ""
-  yq -iy ".user_secrets.${username}.password = \"$user_pass\"" "$SECRETS_FILE"
-  yq -iy ".user_secrets.root.password = \"$user_pass\"" "$SECRETS_FILE"
+  user_hash=$(printf '%s' "$user_pass" | openssl passwd -6 -stdin)
+  yq -iy ".user_secrets.${username}.password = \"$user_hash\"" "$SECRETS_FILE"
+  yq -iy ".user_secrets.root.password = \"$user_hash\"" "$SECRETS_FILE"
   USE_SOPS=true
   plugin_set_value "secrets.sec_mode" "sops"
   ;;
