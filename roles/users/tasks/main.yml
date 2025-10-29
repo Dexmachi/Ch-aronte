@@ -55,8 +55,8 @@
 
 - name: Make sure users exist
   ansible.builtin.user:
-    name: "{{ (item.name | default(['Ch-obold'])) }}"
-    shell: "/bin/{{ (item.shell | default(['bash'])) }}"
+    name: "{{ (item.name | default('Ch-obold')) }}"
+    shell: "/bin/{{ (item.shell | default('bash')) }}"
     groups: "{{ item.groups | join(',') }}"
     append: true
     create_home: true
