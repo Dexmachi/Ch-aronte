@@ -62,13 +62,13 @@
 #                            if secrets.sec_mode == 'sops'
 #                            else lookup('file', secrets.sec_file) }}"
 #     user_secrets: "{{ (user_secrets_content | join('') | from_yaml).user_secrets }}"
-# 
+#
 # - name: Get shadow entries
 #   ansible.builtin.getent:
 #     database: shadow
 #   register: shadow_entries
 #   become: true
-# 
+#
 # - name: Compare passwords
 #   ansible.builtin.debug:
 #     msg:
