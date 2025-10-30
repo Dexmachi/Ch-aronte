@@ -53,6 +53,15 @@
     fail_msg: "The file '{{ secrets.sec_file }}' seems to have been criptographed with sops, however, secrets.sec_mode is '{{ secrets.sec_mode }}', please verify your config"
   when: secrets.sec_mode != 'sops'
 
+# - name: debug show users passwords
+#   ansible.builtin.debug:
+#     var: user_secrets_content
+#   vars:
+#     user_secrets_content: "{{ lookup('pipe', 'sops --decrypt ' + secrets.sec_file)
+#                                if secrets.sec_mode == 'sops'
+#                                else lookup('file', secrets.sec_file) }}"
+#     user_secrets: "{{ (user_secrets_content | join('') | from_yaml).user_secrets }}"
+
 - name: Make sure users exist
   ansible.builtin.user:
     name: "{{ (item.name | default('Ch-obold')) }}"
@@ -67,9 +76,7 @@
                   else omit }}"
   loop: "{{ users }}"
   vars:
-    user_secrets_content: "{{ lookup('community.sops.sops',
-                           file=secrets.sec_file,
-                           config_file=secrets.sec_sops)
+    user_secrets_content: "{{ lookup('pipe', 'sops --decrypt ' + secrets.sec_file)
                            if secrets.sec_mode == 'sops'
                            else lookup('file', secrets.sec_file) }}"
     user_secrets: "{{ (user_secrets_content | join('') | from_yaml).user_secrets }}"
