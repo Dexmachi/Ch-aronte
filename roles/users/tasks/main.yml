@@ -56,11 +56,33 @@
 # - name: debug show users passwords
 #   ansible.builtin.debug:
 #     var: user_secrets_content
+#   loop: "{{ users }}"
 #   vars:
 #     user_secrets_content: "{{ lookup('pipe', 'sops --decrypt ' + secrets.sec_file)
-#                                if secrets.sec_mode == 'sops'
-#                                else lookup('file', secrets.sec_file) }}"
+#                            if secrets.sec_mode == 'sops'
+#                            else lookup('file', secrets.sec_file) }}"
 #     user_secrets: "{{ (user_secrets_content | join('') | from_yaml).user_secrets }}"
+# 
+# - name: Get shadow entries
+#   ansible.builtin.getent:
+#     database: shadow
+#   register: shadow_entries
+#   become: true
+# 
+# - name: Compare passwords
+#   ansible.builtin.debug:
+#     msg:
+#       - "User: {{ item.name }}"
+#       - "Password from secrets file: {{ user_secrets[item.name].password | default('Not found') }}"
+#       - "Password from getent shadow: {{ shadow_entries.ansible_facts.getent_shadow[item.name][0] if item.name in shadow_entries.ansible_facts.getent_shadow else 'User not in shadow' }}"
+#   loop: "{{ users }}"
+#   vars:
+#     user_secrets_content: "{{ lookup('pipe', 'sops --decrypt ' + secrets.sec_file)
+#                            if secrets.sec_mode == 'sops'
+#                            else lookup('file', secrets.sec_file) }}"
+#     user_secrets: "{{ (user_secrets_content | join('') | from_yaml).user_secrets }}"
+#   when:
+#     - shadow_entries.ansible_facts.getent_shadow is defined
 
 - name: Make sure users exist
   ansible.builtin.user:
