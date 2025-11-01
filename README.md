@@ -7,9 +7,9 @@
 
 ---
 
-> [!WARNING]
+> [!DANGER]
 >
-> JUST LEARNED ABOUT OMEGACONF, IT'D ALLOW FOR NIX-LIKE FUNCTIONAL CONFIGURATION. Check [example](Ch-obolos/dex/example.py)
+> This repository IS GOING TO BE deprecated. The current state of the system _works fine_, I use it as an personal manager, however, it is not nixlike, since it's only a config file, also, ansible is hellishly slow, cause it loads lots of things that are not necessary in the slightest. That being said, I will work on an Pyinfra fork with an Ch-obolos schema (still looking for different methodologies) to allow for both configuration as code, configuration editing the Ch-obolos DSL directly and faster system management under the [Ch-aOS](https://github.com/Ch-aOS-Ch) Project suite, I chose to create an organization for this for the sole reason of allowing for an better and centralized... well organization of al 3 of the projects (Ch-obolos, Ch-aronte and Ch-imera).
 
 ***An guided arch-installer and declarative system manager***
 
